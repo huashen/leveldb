@@ -493,3 +493,13 @@ if(LEVELDB_INSTALL)
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   )
 endif(LEVELDB_INSTALL)
+
+set(SOURCE_FILES main.cpp)
+set(INC_DIR /usr/local/include)  #新加行，设置leveldb头文件所在位置
+add_executable(useLevelDb ${SOURCE_FILES})
+set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,/usr/local/lib") #新加行，编译选项，添加库路径
+include_directories(${INC_DIR}) #新加行，设置头文件目录
+target_link_libraries(useLevelDb libleveldb.a) #新加行，链接库，格式为target_link_libraries(工程名 库名)
+find_package(Threads REQUIRED)#新加行，依赖于threads库
+target_link_libraries(useLevelDb Threads::Threads)#新加行，链接库

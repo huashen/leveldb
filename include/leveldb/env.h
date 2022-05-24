@@ -39,6 +39,11 @@
 #endif  // defined(DeleteFile)
 #endif  // defined(_WIN32)
 
+/**
+ * 操作系统环境的抽象。 
+ * 此接口的 posix 实现在 util/env_posix.cc 中
+ * windows实现在 env.windows.cc中
+ */
 namespace leveldb {
 
 class FileLock;

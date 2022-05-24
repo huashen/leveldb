@@ -12,6 +12,9 @@
 #include "leveldb/iterator.h"
 #include "leveldb/options.h"
 
+/**
+ *  程序入口
+ */
 namespace leveldb {
 
 // Update CMakeLists.txt if you change these

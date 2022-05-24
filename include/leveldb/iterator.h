@@ -19,6 +19,9 @@
 #include "leveldb/slice.h"
 #include "leveldb/status.h"
 
+/**
+ * 迭代器，迭代获取数据
+ */
 namespace leveldb {
 
 class LEVELDB_EXPORT Iterator {

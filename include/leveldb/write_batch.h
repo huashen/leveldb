@@ -26,6 +26,9 @@
 #include "leveldb/export.h"
 #include "leveldb/status.h"
 
+/**
+ * 原子方式进行批量更新
+ */
 namespace leveldb {
 
 class Slice;

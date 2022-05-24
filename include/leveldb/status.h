@@ -19,6 +19,9 @@
 #include "leveldb/export.h"
 #include "leveldb/slice.h"
 
+/**
+ * 封装成功或错误信息
+ */
 namespace leveldb {
 
 class LEVELDB_EXPORT Status {

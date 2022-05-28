@@ -86,7 +86,7 @@ class LEVELDB_EXPORT Status {
     kNotSupported = 3,
     kInvalidArgument = 4,
     kIOError = 5
-  };
+  };//状态枚举 ok 文件没找到 文件损坏等
 
   Code code() const {
     return (state_ == nullptr) ? kOk : static_cast<Code>(state_[4]);

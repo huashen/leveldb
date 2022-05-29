@@ -100,6 +100,12 @@ class LEVELDB_EXPORT Status {
   //    state_[0..3] == length of message
   //    state_[4]    == code
   //    state_[5..]  == message
+  /**
+   * 私有变量是一个char指针
+   * 前4个字节存储message的长度
+   * 第5个字节存储code码
+   * 后边的字节存储消息本身
+   */
   const char* state_;
 };
 

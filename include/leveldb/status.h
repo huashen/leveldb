@@ -27,7 +27,9 @@ namespace leveldb {
 class LEVELDB_EXPORT Status {
  public:
   // Create a success status.
+  //初始化state_为nullptr，表示OK消息
   Status() noexcept : state_(nullptr) {}
+  //析构函数，释放堆内存
   ~Status() { delete[] state_; }
 
   Status(const Status& rhs);

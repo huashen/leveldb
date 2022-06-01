@@ -27,7 +27,10 @@ namespace leveldb {
 class LEVELDB_EXPORT Status {
  public:
   // Create a success status.
-  //初始化state_为nullptr，表示OK消息
+  /**
+   * 关键字noexcept声明符表明该函数不会抛出异常
+   * 初始化state_为nullptr，表示OK消息
+   */
   Status() noexcept : state_(nullptr) {}
   //析构函数，释放堆内存
   ~Status() { delete[] state_; }

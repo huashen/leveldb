@@ -120,6 +120,7 @@ inline Status::Status(const Status& rhs) {
 inline Status& Status::operator=(const Status& rhs) {
   // The following condition catches both aliasing (when this == &rhs),
   // and the common case where both rhs and *this are ok.
+  //不是给自己赋值，就先释放自己的内存，然后深拷贝
   if (state_ != rhs.state_) {
     delete[] state_;
     state_ = (rhs.state_ == nullptr) ? nullptr : CopyState(rhs.state_);

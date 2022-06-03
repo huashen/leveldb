@@ -157,11 +157,24 @@ class DBImpl : public DB {
 
   // Constant after construction
   Env* const env_;
+  /**
+   * key比较器
+   */
   const InternalKeyComparator internal_comparator_;
   const InternalFilterPolicy internal_filter_policy_;
+
+  /**
+   * 配置类
+   */
   const Options options_;  // options_.comparator == &internal_comparator_
+
+
   const bool owns_info_log_;
   const bool owns_cache_;
+
+  /**
+   * db名
+   */
   const std::string dbname_;
 
   // table_cache_ provides its own synchronization

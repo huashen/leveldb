@@ -1485,6 +1485,7 @@ Status DB::Open(const Options& options, const std::string& dbname, DB** dbptr) {
 
   //初始化dbImpl
   DBImpl* impl = new DBImpl(options, dbname);
+  //获取锁
   impl->mutex_.Lock();
   VersionEdit edit;
   // Recover handles create_if_missing, error_if_exists
@@ -1494,7 +1495,7 @@ Status DB::Open(const Options& options, const std::string& dbname, DB** dbptr) {
   if (s.ok() && impl->mem_ == nullptr) {
     // Create new log and a corresponding memtable.
     //创建新的Log和MemTable
-    uint64_t new_log_number = impl->versions_->NewFileNumber();
+    uint64_t new_log_number = impl->versions_->NewFileNumber();//创建日志编号
     WritableFile* lfile;
     s = options.env->NewWritableFile(LogFileName(dbname, new_log_number),
                                      &lfile);
@@ -1502,8 +1503,11 @@ Status DB::Open(const Options& options, const std::string& dbname, DB** dbptr) {
       edit.SetLogNumber(new_log_number);
       impl->logfile_ = lfile;
       impl->logfile_number_ = new_log_number;
+      //日志写入器，是对lfile的包装
       impl->log_ = new log::Writer(lfile);
+      //创建内存表格
       impl->mem_ = new MemTable(impl->internal_comparator_);
+      //增加内存表的引用
       impl->mem_->Ref();
     }
   }
@@ -1513,9 +1517,12 @@ Status DB::Open(const Options& options, const std::string& dbname, DB** dbptr) {
     s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
   }
   if (s.ok()) {
+    //删除过时的文件
     impl->RemoveObsoleteFiles();
+    //调度后台进行压缩
     impl->MaybeScheduleCompaction();
   }
+  //解锁
   impl->mutex_.Unlock();
   if (s.ok()) {
     assert(impl->mem_ != nullptr);

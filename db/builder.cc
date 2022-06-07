@@ -20,26 +20,33 @@ Status BuildTable(const std::string& dbname, Env* env, const Options& options,
   meta->file_size = 0;
   iter->SeekToFirst();
 
+  //生成文件:格式 "0000x.sst"
   std::string fname = TableFileName(dbname, meta->number);
   if (iter->Valid()) {
     WritableFile* file;
+    //创建一个可写文件
     s = env->NewWritableFile(fname, &file);
     if (!s.ok()) {
       return s;
     }
 
+    //TableBuilder负责table生成和写入
     TableBuilder* builder = new TableBuilder(options, file);
+    //META:最小key
     meta->smallest.DecodeFrom(iter->key());
     Slice key;
     for (; iter->Valid(); iter->Next()) {
       key = iter->key();
+      //增加数据到builder
       builder->Add(key, iter->value());
     }
     if (!key.empty()) {
+      //META:最大key
       meta->largest.DecodeFrom(key);
     }
 
     // Finish and check for builder errors
+    //完成写入
     s = builder->Finish();
     if (s.ok()) {
       meta->file_size = builder->FileSize();

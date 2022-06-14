@@ -37,14 +37,14 @@ struct TableBuilder::Rep {
 
   Options options;
   Options index_block_options;
-  WritableFile* file;
+  WritableFile* file; //sstable文件指针
   uint64_t offset;
   Status status;
-  BlockBuilder data_block;
-  BlockBuilder index_block;
-  std::string last_key;
+  BlockBuilder data_block;//数据块
+  BlockBuilder index_block;//索引块
+  std::string last_key;//上一次的key，用于比较和建立索引
   int64_t num_entries;
-  bool closed;  // Either Finish() or Abandon() has been called.
+  bool closed;  // Either Finish() or Abandon() has been called.// 是否结束
   FilterBlockBuilder* filter_block;
 
   // We do not emit the index entry for a block until we have seen the
@@ -56,7 +56,7 @@ struct TableBuilder::Rep {
   // blocks.
   //
   // Invariant: r->pending_index_entry is true only if data_block is empty.
-  bool pending_index_entry;
+  bool pending_index_entry;//是否要新增索引块
   BlockHandle pending_handle;  // Handle to add to index block
 
   std::string compressed_output;
